@@ -1,0 +1,9 @@
+<div  ng-controller="GraphController as $ctrl">
+    <div release-header><div style="display: inline;"><button type="button" class="button">RAVAN Toolbar</button><span>do cool toolbar shit here!</span></div></div>
+    <div class="content-under-header">
+        <div>
+            <p ng-if="$ctrl.errorMessage">{{$ctrl.errorMessage}}</p>
+            <e-charts style="width: 1500px; height: 600px" class="echarts" ec-chart="$ctrl.chartObj" ec-config="$ctrl.graphConfig" ec-option="$ctrl.graphOptions"></e-charts>
+        </div>
+    </div>
+</div>
