@@ -13,7 +13,6 @@ export default function EChart(){
         link: function(scope,element,attrs,ctrl) {
 
             function refreshChart() {
-                console.log("here", scope.config);
                 const theme = (scope.config && scope.config.theme) ? scope.config.theme : 'default';
                 let chart = scope.chartObj;
                 if (chart === undefined ||  chart === null) {

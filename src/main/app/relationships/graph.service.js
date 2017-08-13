@@ -5,7 +5,7 @@ export default class GraphService {
 
     get(releaseId) {
         return this._$http({
-            url: 'api/extension/relationships/graph?templateId=Applications/' + releaseId,
+            url: 'api/extension/relationships/graph?id=Applications/' + releaseId,
             method: 'GET'
         }).then((res) => res.data.entity);
     }

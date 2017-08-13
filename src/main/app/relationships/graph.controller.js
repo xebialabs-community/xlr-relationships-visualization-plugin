@@ -1,29 +1,46 @@
 
 export default class GraphController {
-    constructor (GraphService, $timeout, $window) {
+    constructor ($scope, $location, GraphService, $timeout, $window, $rootScope) {
         this.graphService = GraphService;
         this.errorMessage = "";
         this.chartObj = null;
         this.graphOptions = {};
         this.$timeout = $timeout;
         this.$window = $window;
+        this.$location = $location;
+        this.$rootScope = $rootScope;
+        this.release =  $scope.releasePageExtensionCtrl.release;
+        this.layoutDirection = "LR";
+        this.layoutAlign = "UL";
         this._initGraphConfig();
         this._initGraphOptions();
         this._initGraphData();
     }
 
+
     _initGraphConfig() {
         this.graphConfig = {
             theme:'default',
-            event: [{click:(evt) => this.graphClick(evt)}],
+            event: [{click:(evt) => this._updateDragLayerPosition()}],
             dataLoaded:false
         };
     }
 
 
-    graphClick(evt) {
-        console.log(evt);
-        this._updateDragLayerPosition();
+    layoutChanged() {
+        this._layoutNodes({
+            nodes: this.graphOptions.series[0].data,
+            edges: this.graphOptions.series[0].links
+        });
+    }
+    nodeClick(node) {
+        let id = node.name.substring("Application/".length + 1);
+        id = id.replace(/\//g, "-");
+        let uri = id + "/relationships"
+        uri = (node.kind === "template") ? "/templates/" + uri : "/releases/" + uri;
+        this.$rootScope.$apply(() => {
+            this.$location.path(uri);
+        });
     }
 
     _updateDragLayerPosition() {
@@ -37,7 +54,7 @@ export default class GraphController {
     }
 
     _initGraphData() {
-        this.graphService.get("Release474169433").then((data) => {
+        this.graphService.get(this.release.id).then((data) => {
             this._layoutNodes(data);
             this._updateGraphData(data.nodes, data.edges);
             this.$timeout(() => this._enableDragLayer(data.nodes), 500);
@@ -48,8 +65,18 @@ export default class GraphController {
     }
 
     _updateGraphData(nodes, edges) {
+
+        nodes.forEach((n) => {
+                if (n.kind == "template") {
+                    n.itemStyle = { normal: { color: "#ff9e3b"}, emphasis: { color: "#ff9e3b"}};
+                } else {
+                    n.itemStyle = { normal: { color: "#4592FF"}, emphasis: { color: "#4592FF"}};
+                }
+        });
         nodes[0].symbol = "diamond";
         nodes[0].itemStyle = { normal: { color: "#009800"}, emphasis: { color: "#009800"}};
+
+
         this.graphOptions.series[0].data = nodes;
         this.graphOptions.series[0].links = edges;
         this.graphConfig.dataLoaded = true;
@@ -57,7 +84,7 @@ export default class GraphController {
 
     _layoutNodes(data) {
         let g = new dagre.graphlib.Graph();
-        g.setGraph({rankDir: "LR", align: "UR"});
+        g.setGraph({rankDir: this.layoutDirection, align: this.layoutAlign});
         g.setDefaultEdgeLabel(() => { return {} });
         data.nodes.forEach(n => {
             n.width = 50;
@@ -84,7 +111,8 @@ export default class GraphController {
                     invisible: true,
                     draggable: true,
                     ondragend: updatePosition,
-                    onclick: (e) => this.graphClick(e),
+                    onclick: (e) => updatePosition,
+                    ondblclick: (e) => this.nodeClick(item),
                     ondrag: echarts.util.curry(function(dataIndex, dx, dy) {
                         const coords = chart.convertFromPixel({seriesIndex: 0}, this.position);
                         nodes[dataIndex].x = coords[0];
@@ -103,8 +131,7 @@ export default class GraphController {
     _initGraphOptions() {
         this.graphOptions = {
             tooltip: {
-                show: true,
-                triggerOn: "click"
+                show: false
             },
             animation: false,
             series: [{
@@ -114,23 +141,9 @@ export default class GraphController {
                 symbolSize: 30,
                 roam: true,
                 edgeSymbol: ['circle', 'arrow'],
-                edgeSymbolSize: [0, 10],
+                edgeSymbolSize: [0, 8],
                 focusNodeAdjacency: false,
                 animation: false,
-                tooltip: {
-                    show: true,
-                    formatter: function(params) {
-                        if (params.data.hasOwnProperty("cardinality")) {
-                            if (params.data.cardinality > 1) {
-                                return "triggered " + params.data.cardinality + " times";
-                            }
-                        }
-                        return params.data.label;
-                    },
-                    textStyle: {
-                        fontSize: 12
-                    }
-                },
                 itemStyle: {
                     normal: {
                         color: "#4592FF",

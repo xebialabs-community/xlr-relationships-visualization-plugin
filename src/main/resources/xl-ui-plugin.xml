@@ -3,7 +3,7 @@
         xsi:schemaLocation="http://www.xebialabs.com/deployit/ui-plugin xl-ui-plugin.xsd">
 
     <menu-ref ref="xlrelease.ReleasePageMenu">
-        <menu-item label="Relationships" uri="include/relationships/index.html" weight="85" path-suffix="relationships"/>
+        <menu-item label="Relationships" uri="include/relationships/index.html" weight="50" path-suffix="relationships"/>
     </menu-ref>
 
     <library name="extension.relationships"/>

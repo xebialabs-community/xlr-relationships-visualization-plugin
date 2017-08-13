@@ -1,5 +1,19 @@
 <div  ng-controller="GraphController as $ctrl">
-    <div release-header><div style="display: inline;"><button type="button" class="button">RAVAN Toolbar</button><span>do cool toolbar shit here!</span></div></div>
+    <div release-header>
+        <div style="display: inline;">
+            <span>Layout Direction</span>
+            <select ng-model="$ctrl.layoutDirection" class="button dropdown-button" ng-change="$ctrl.layoutChanged()">
+                <option value="TB">Top Bottom</option>
+                <option value="BT">Bottom Top</option>
+                <option value="LR">Left Right</option>
+                <option value="RL">Right Left</option>
+            </select>
+            <span>Alignment</span>
+            <select ng-model="$ctrl.layoutAlign" class="button dropdown-button" ng-change="$ctrl.layoutChanged()">
+                <option value="UL">Up Left</option>
+                <option value="UR">Up Right</option>
+            </select>
+    </div>
     <div class="content-under-header">
         <div>
             <p ng-if="$ctrl.errorMessage">{{$ctrl.errorMessage}}</p>
