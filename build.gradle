@@ -30,7 +30,6 @@ task webpackBuild(type: NpmTask, dependsOn: 'npmInstall') {
 processResources.dependsOn webpackBuild
 
 jar {
-    baseName="xlr-relationships-plugin"
     from('build/app') {
         include '**/*.*'
     }
