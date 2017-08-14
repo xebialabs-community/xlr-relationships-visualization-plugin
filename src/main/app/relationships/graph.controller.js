@@ -10,6 +10,7 @@ export default class GraphController {
         this.$location = $location;
         this.$rootScope = $rootScope;
         this.release =  $scope.releasePageExtensionCtrl.release;
+        this.currentStart = "TEMPLATE" == this.release.status ? "template" : "release";
         this.layoutDirection = "LR";
         this.layoutAlign = "UL";
         this._initGraphConfig();
@@ -65,16 +66,17 @@ export default class GraphController {
     }
 
     _updateGraphData(nodes, edges) {
-
+        const templateStyle = { color: "transparent", borderWidth: 2, borderColor: "#0099CC"};
         nodes.forEach((n) => {
                 if (n.kind == "template") {
-                    n.itemStyle = { normal: { color: "#ff9e3b"}, emphasis: { color: "#ff9e3b"}};
+                    n.itemStyle = { normal: templateStyle, emphasis: templateStyle};
+                    n.symbolSize= 28;
                 } else {
-                    n.itemStyle = { normal: { color: "#4592FF"}, emphasis: { color: "#4592FF"}};
+                    n.itemStyle = { normal: { color: "#0099CC"}, emphasis: { color: "#0099CC"}};
                 }
         });
-        nodes[0].symbol = "diamond";
-        nodes[0].itemStyle = { normal: { color: "#009800"}, emphasis: { color: "#009800"}};
+        nodes[0].symbol = 'image:///static/7.0/relationships/img/pin.svg';
+        nodes[0].itemStyle = { normal: { color: "#68B749"}, emphasis: { color: "#68B749"}};
 
 
         this.graphOptions.series[0].data = nodes;
@@ -144,18 +146,11 @@ export default class GraphController {
                 edgeSymbolSize: [0, 8],
                 focusNodeAdjacency: false,
                 animation: false,
-                itemStyle: {
-                    normal: {
-                        color: "#4592FF",
-                    },
-                    emphasis: {
-                        color: "#4592FF"
-                    }
-                },
                 edgeLabel: {
                     normal: {
                         show: true,
                         textStyle: {
+                            color: "#999999",
                             fontSize: 10
                         },
                         formatter: function(params) {return params.data.label}
@@ -163,6 +158,7 @@ export default class GraphController {
                 },
                 lineStyle: {
                     normal: {
+                        color: "#DADADA",
                         opacity: 1,
                         width: 2,
                     }

@@ -16,9 +16,32 @@
         </div>
     </div>
     <div class="content-under-header">
+        <div class="relationship-legend-bar">
+            <img src="static/7.0/relationships/img/pin.svg" class="relationship-legend-icon"/><span class="relationship-legend">Current {{$ctrl.currentStart}}</span>
+            <img src="static/7.0/relationships/img/release.svg" class="relationship-legend-icon"/><span class="relationship-legend">Release</span>
+            <img src="static/7.0/relationships/img/template.svg" class="relationship-legend-icon"/><span class="relationship-legend">Template</span>
+        </div>
         <div>
             <p ng-if="$ctrl.errorMessage">{{$ctrl.errorMessage}}</p>
             <e-charts style="width: 1500px; height: 600px" class="echarts" ec-chart="$ctrl.chartObj" ec-config="$ctrl.graphConfig" ec-option="$ctrl.graphOptions"></e-charts>
         </div>
     </div>
+    <style type="text/css">
+        .relationship-legend-bar {
+            padding-bottom: 20px;
+        }
+        .relationship-legend-icon {
+            width: 25px; height: 25px;
+        }
+
+        .relationship-legend {
+            font-family: "Sans-serif";
+            font-size: 12px;
+            line-height: 1;
+            font-weight: 400;
+            color: rgb(51, 51, 51);
+            padding-left: 10px;
+            padding-right: 30px;
+        }
+    </style>
 </div>

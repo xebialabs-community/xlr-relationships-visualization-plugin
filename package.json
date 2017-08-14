@@ -11,9 +11,9 @@
   "license": "Apache-2.0",
   "dependencies": {
     "angular": "^1.6.0",
-    "webpack": "^2.6.1",
     "dagre": "0.7.4",
-    "echarts": "3.6.2"
+    "echarts": "3.6.2",
+    "webpack": "^2.6.1"
   },
   "devDependencies": {
     "babel-core": "^6.13.2",
@@ -23,7 +23,9 @@
     "browser-sync": "^2.18.13",
     "browser-sync-webpack-plugin": "^1.2.0",
     "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.28.4",
     "ng-annotate-webpack-plugin": "^0.2.1-pre",
+    "style-loader": "^0.18.2",
     "uglify-js": "^3.0.27"
   }
 }
