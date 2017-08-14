@@ -15,7 +15,8 @@ module.exports = {
             new NgAnnotatePlugin({ add: true }),
 
             new CopyWebpackPlugin([
-                { from: './src/main/app/index.html', target: 'web/include/relationships/index.html'},
+                {from: './src/main/app/index.html', target: 'web/include/relationships/index.html'},
+                {from: './node_modules/bootstrap/fonts', to: '../fonts'},
                 {from: './node_modules/echarts/dist/echarts.js', target: 'web/include/relationships/echarts.js', transform: minify},
                 {from: './node_modules/dagre/dist/dagre.js', target: 'web/include/relationships/dagre.js', transform: minify}
             ]),
