@@ -23,7 +23,7 @@ with the ability to visualize and navigate the relationships amongst pipelines.
 ## Installation ##
 
 
-Plugin can be downloaded directly from the plugin's repository on [Github](https://github.com/xebialabs-community/xlr-relationship-visualization-plugin/releases).
+Plugin can be downloaded directly from the plugin's repository on [Github](https://github.com/xebialabs-community/xlr-relationships-visualization-plugin/releases).
 
 Place the plugin's **jar** file in the __&lt;xlr-home&gt;/plugins__ directory. 
 
