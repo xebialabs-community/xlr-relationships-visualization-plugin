@@ -28,6 +28,13 @@ export default class GraphController {
         };
     }
 
+    zoomIn() {
+        this.chartObj._chartsViews[0]._controller.trigger('zoom', 1/1.1, 750, 300);
+    }
+
+    zoomOut() {
+        this.chartObj._chartsViews[0]._controller.trigger('zoom', 1.1, 750, 300);
+    }
 
     layoutChanged() {
         this.$window.sessionStorage.setItem("relationships_layout_direction", this.layoutDirection);

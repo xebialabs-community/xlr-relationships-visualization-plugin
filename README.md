@@ -10,10 +10,13 @@ with the ability to visualize and navigate the relationships amongst pipelines.
   
 ## Features ##
 
-* Navigate to target release/template with double click.
-* Visualize releases, templates and their design, runtime relationship.
-* Automatic layout arrangement.
-* Drag and drop layout arrangement.
+* Visualize release and template relationships in their design and runtime states.
+* Navigate to target release or template with double click.
+* Zoom with mouse wheel or toolbar controls.
+* Layout
+    * Automatic (Direction and Alignment)
+    * Manual (Drag and Drop node)
+
 
 ## Requirements ##
 
