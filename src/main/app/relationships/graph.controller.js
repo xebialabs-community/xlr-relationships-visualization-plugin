@@ -89,7 +89,6 @@ export default class GraphController {
         nodes[0].symbol = 'image:///static/7.0/relationships/img/pin.svg';
         nodes[0].itemStyle = { normal: { color: "#68B749"}, emphasis: { color: "#68B749"}};
 
-
         this.graphOptions.series[0].data = nodes;
         this.graphOptions.series[0].links = edges;
         this.graphConfig.dataLoaded = true;
