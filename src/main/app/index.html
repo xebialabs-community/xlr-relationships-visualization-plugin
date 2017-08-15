@@ -1,18 +1,19 @@
 <div  ng-controller="GraphController as $ctrl">
     <div release-header>
         <div style="display: inline;">
-            <span>Layout Direction</span>
+            <span class="relationship-toolbar-label">Layout Direction </span>
             <select ng-model="$ctrl.layoutDirection" class="button dropdown-button" ng-change="$ctrl.layoutChanged()">
                 <option value="TB">Top Bottom</option>
                 <option value="BT">Bottom Top</option>
                 <option value="LR">Left Right</option>
                 <option value="RL">Right Left</option>
             </select>
-            <span>Alignment</span>
+            <span class="relationship-toolbar-label">Alignment </span>
             <select ng-model="$ctrl.layoutAlign" class="button dropdown-button" ng-change="$ctrl.layoutChanged()">
                 <option value="UL">Up Left</option>
                 <option value="UR">Up Right</option>
             </select>
+            
         </div>
     </div>
     <div class="content-under-header">
@@ -27,6 +28,9 @@
         </div>
     </div>
     <style type="text/css">
+        .relationship-toolbar-label {
+            padding-right: 10px;
+        }
         .relationship-legend-bar {
             padding-bottom: 20px;
         }

@@ -13,6 +13,7 @@ export default class GraphController {
         this.currentStart = "TEMPLATE" == this.release.status ? "template" : "release";
         this.layoutDirection = "LR";
         this.layoutAlign = "UL";
+        this._initLayoutSettings();
         this._initGraphConfig();
         this._initGraphOptions();
         this._initGraphData();
@@ -29,6 +30,9 @@ export default class GraphController {
 
 
     layoutChanged() {
+        this.$window.sessionStorage.setItem("relationships_layout_direction", this.layoutDirection);
+        this.$window.sessionStorage.setItem("relationships_layout_align", this.layoutAlign);
+
         this._layoutNodes({
             nodes: this.graphOptions.series[0].data,
             edges: this.graphOptions.series[0].links
@@ -127,7 +131,18 @@ export default class GraphController {
         });
 
         this.$window.addEventListener('resize', updatePosition);
+    }
 
+    _initLayoutSettings() {
+        let key = "relationships_layout_direction";
+        if (this.$window.sessionStorage.getItem(key)) {
+            this.layoutDirection = this.$window.sessionStorage.getItem(key);
+        }
+
+        key = "relationships_layout_align";
+        if (this.$window.sessionStorage.getItem(key)) {
+            this.layoutAlign = this.$window.sessionStorage.getItem(key);
+        }
     }
 
     _initGraphOptions() {
