@@ -1,2 +1,14 @@
 language: java
-script: ./gradlew build
+script: "./gradlew build"
+before_deploy:
+  - export UPLOAD_FILE=$(ls build/libs/xlr-relationships-visu*.jar)
+
+deploy:
+  provider: releases
+  api_key:
+    secure: ioFZUHqbqK6veLULPQxDQAjCvC0VLGkH6j8mTxVk019s8ZQImsHk6/baO2gcZgxOdz6dGjRwRd6X79mA4xXx6JKWt2k/tiZrnhPuCGd6CUiVUzqRM4YFXAKioAMeR6Dwev/73X2HXWm+uMPc+eqTHDK27Wmly7UtQ3NgConloavZgcL1CANPEo045d+ASpMVWig6xHO5QKqPkrgvJlsHmqobhjGYlKJcsSJWroS/s2EgEVAK1nZdn99yy3EacYu939Td152QhI7NCsGRSzz+bubiKX7oxx7M0MatKQMZT54r7WO4a8FaXO2vKhs8QiF1eRHICS8Zf5bSR+TFs6IBmKBuPAab8+/Rfv+CohqLj482gh7FNH/HzPNabtxjNfRaadSqwD45VXU0ZV1r0fOhXzrtr0oYc030BkZuAD39Kjajs3FuXHaZ2+/0PSXm0mFtlm0quudssp3EL6fVqcHiXO65mTFaGjWP4vyBudjJK1zEcCBnnDRVg/0WzxuuwpqLZG29N1Z9GAdPyOLhlOQpDpW4Tv37r8WrNVWG35CzcqWys8nroKBVNkBEzFkWfjX/QnAf1a23TtavyHvEGLD+3rQxtGG3UTSuniKedymlysgRgNvhVwNMxyh4YEMVMULR+INZZznTzeIwoSYsf2Lf76jD092xiBNu63P754zwb9I=
+  file: "${UPLOAD_FILE}"
+  skip_cleanup: true
+  on:
+    repo: xebialabs-community/xlr-relationships-visualization-plugin
+    tags: true
