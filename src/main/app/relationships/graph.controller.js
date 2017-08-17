@@ -11,9 +11,8 @@ export default class GraphController {
         this.$rootScope = $rootScope;
         this.release =  $scope.releasePageExtensionCtrl.release;
         this.currentStart = "TEMPLATE" == this.release.status ? "template" : "release";
-        this.layoutDirection = "LR";
-        this.layoutAlign = "UL";
-        this._initLayoutSettings();
+        this.settings = {layoutDirection: "LR", layoutAlign: "UL", showTitle: true, showLabel: true};
+        this._loadSettings();
         this._initGraphConfig();
         this._initGraphOptions();
         this._initGraphData();
@@ -37,14 +36,23 @@ export default class GraphController {
     }
 
     layoutChanged() {
-        this.$window.sessionStorage.setItem("relationships_layout_direction", this.layoutDirection);
-        this.$window.sessionStorage.setItem("relationships_layout_align", this.layoutAlign);
-
+        this._saveSettings();
         this._layoutNodes({
             nodes: this.graphOptions.series[0].data,
             edges: this.graphOptions.series[0].links
         });
     }
+
+    showHideLabels() {
+        this._saveSettings();
+        this.chartObj.setOption({
+            series: [{
+                edgeLabel: { normal: {show: this.settings.showLabel}},
+                label: { normal: {show: this.settings.showTitle}}
+            }]
+        });
+    }
+
     nodeClick(node) {
         let id = node.name.substring("Application/".length + 1);
         id = id.replace(/\//g, "-");
@@ -96,7 +104,7 @@ export default class GraphController {
 
     _layoutNodes(data) {
         let g = new dagre.graphlib.Graph();
-        g.setGraph({rankDir: this.layoutDirection, align: this.layoutAlign});
+        g.setGraph({rankDir: this.settings.layoutDirection, align: this.settings.layoutAlign});
         g.setDefaultEdgeLabel(() => { return {} });
         data.nodes.forEach(n => {
             n.width = 50;
@@ -139,17 +147,17 @@ export default class GraphController {
         this.$window.addEventListener('resize', updatePosition);
     }
 
-    _initLayoutSettings() {
-        let key = "relationships_layout_direction";
-        if (this.$window.sessionStorage.getItem(key)) {
-            this.layoutDirection = this.$window.sessionStorage.getItem(key);
-        }
-
-        key = "relationships_layout_align";
-        if (this.$window.sessionStorage.getItem(key)) {
-            this.layoutAlign = this.$window.sessionStorage.getItem(key);
+    _loadSettings() {
+        let item = this.$window.sessionStorage.getItem("relationships_settings");
+        if (item) {
+            this.settings = JSON.parse(item);
         }
     }
+
+    _saveSettings() {
+        this.$window.sessionStorage.setItem("relationships_settings", JSON.stringify(this.settings));
+    }
+
 
     _initGraphOptions() {
         this.graphOptions = {
@@ -169,7 +177,7 @@ export default class GraphController {
                 animation: false,
                 edgeLabel: {
                     normal: {
-                        show: true,
+                        show: this.settings.showLabel,
                         textStyle: {
                             color: "#999999",
                             fontSize: 10
@@ -186,7 +194,7 @@ export default class GraphController {
                 },
                 label: {
                     normal: {
-                        show: true,
+                        show: this.settings.showTitle,
                         formatter: function(params) {return params.data.label},
                         position: 'top',
                         textStyle: {

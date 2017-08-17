@@ -2,20 +2,24 @@
     <div release-header>
         <div style="display: inline;">
             <span class="relationship-toolbar-label">Layout Direction </span>
-            <select ng-model="$ctrl.layoutDirection" class="button dropdown-button" ng-change="$ctrl.layoutChanged()">
+            <select ng-model="$ctrl.settings.layoutDirection" class="button dropdown-button" ng-change="$ctrl.layoutChanged()">
                 <option value="TB">Top Bottom</option>
                 <option value="BT">Bottom Top</option>
                 <option value="LR">Left Right</option>
                 <option value="RL">Right Left</option>
             </select>
             <span class="relationship-toolbar-label">Alignment </span>
-            <select ng-model="$ctrl.layoutAlign" class="button dropdown-button" ng-change="$ctrl.layoutChanged()">
+            <select ng-model="$ctrl.settings.layoutAlign" class="button dropdown-button" ng-change="$ctrl.layoutChanged()">
                 <option value="UL">Up Left</option>
                 <option value="UR">Up Right</option>
             </select>
             <span class="relationship-toolbar-label">Zoom </span>
             <button class="btn btn-flat" ng-click="$ctrl.zoomIn()">-</button>
             <button class="btn btn-flat" ng-click="$ctrl.zoomOut()">+</button>
+            <span class="relationship-toolbar-showhide-label">Title&nbsp;&nbsp;<input type="checkbox" ng-model="$ctrl.settings.showTitle" ng-change="$ctrl.showHideLabels()"></input></span>
+            <span class="relationship-toolbar-showhide-label">Label&nbsp;&nbsp;<input type="checkbox" ng-model="$ctrl.settings.showLabel" ng-change="$ctrl.showHideLabels()"></input></span>
+
+
         </div>
     </div>
     <div class="content-under-header">
@@ -32,6 +36,10 @@
     <style type="text/css">
         .relationship-toolbar-label {
             padding-right: 10px;
+        }
+
+        .relationship-toolbar-showhide-label {
+            padding-left: 10px;
         }
         .relationship-legend-bar {
             padding-bottom: 20px;

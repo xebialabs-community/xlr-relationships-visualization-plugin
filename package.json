@@ -1,14 +1,14 @@
 {
-  "name": "xlr-releationships-plugin",
-  "version": "1.0.0",
+  "name": "xlr-relationships-visualization-plugin",
+  "version": "7.0.0",
   "description": "XLR plugin with Angular 1.X, ES6 and webpack",
   "main": "src/main/app/relationships.module.js",
   "scripts": {
     "watch": "webpack --progress --watch",
     "build": "webpack --config webpack.config.prod.js"
   },
-  "author": "rnaidoo",
-  "license": "Apache-2.0",
+  "author": "Ravan Naidoo",
+  "license": "MIT",
   "dependencies": {
     "angular": "^1.6.0",
     "dagre": "0.7.4",
