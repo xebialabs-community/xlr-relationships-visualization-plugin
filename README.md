@@ -15,6 +15,7 @@ with the ability to visualize and navigate the relationships amongst pipelines.
 * Visualize release and template relationships in their design and runtime states.
 * Navigate to target release or template with double click.
 * Zoom with mouse wheel or toolbar controls.
+* Show/Hide release titles and relationship labels.
 * Layout
     * Automatic with direction and alignment toolbar controls
     * Manual by dragging and dropping node
