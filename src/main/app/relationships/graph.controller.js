@@ -53,10 +53,10 @@ export default class GraphController {
         });
     }
 
-    nodeClick(node) {
+    nodeClick(node, routeToRelationshipsView) {
         let id = node.name.substring("Application/".length + 1);
         id = id.replace(/\//g, "-");
-        let uri = id + "/relationships"
+        let uri = routeToRelationshipsView ? id + "/relationships" : id + "/table";
         uri = (node.kind === "template") ? "/templates/" + uri : "/releases/" + uri;
         this.$rootScope.$apply(() => {
             this.$location.path(uri);
@@ -132,7 +132,7 @@ export default class GraphController {
                     draggable: true,
                     ondragend: updatePosition,
                     onclick: (e) => updatePosition,
-                    ondblclick: (e) => this.nodeClick(item),
+                    ondblclick: (e) => this.nodeClick(item, e.event.shiftKey),
                     ondrag: echarts.util.curry(function(dataIndex, dx, dy) {
                         const coords = chart.convertFromPixel({seriesIndex: 0}, this.position);
                         nodes[dataIndex].x = coords[0];

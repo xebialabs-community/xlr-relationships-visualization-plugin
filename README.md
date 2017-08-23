@@ -13,7 +13,9 @@ with the ability to visualize and navigate the relationships amongst pipelines.
 ## Features ##
 
 * Visualize release and template relationships in their design and runtime states.
-* Navigate to target release or template with double click.
+* Navigate to target release or template
+    * Double click to view target tasks in table view.
+    * Shift + Double click to go to target's relationship view.
 * Zoom with mouse wheel or toolbar controls.
 * Show/Hide release titles and relationship labels.
 * Layout
