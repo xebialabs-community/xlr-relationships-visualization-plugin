@@ -45,7 +45,8 @@ Place the plugin's **jar** file in the __&lt;xlr-home&gt;/plugins__ directory.
 When working with releases or templates, you will find an additional option called **`Relationships`** in the drop down menu.
 ![Menu](images/menu.png)
 
-The plugin will analyse all **`xlrease.CreateRelease`** tasks in the current release/template and its targets to build up the relationship graph.
+The plugin will analyse all **`xlrelease.CreateReleaseTask`** and **`xlrelease.GateTask`** tasks in the current release/template and its targets to build up the relationship graph.
+Currently references to release-as-code (xfile) script tasks are not supported.
 
 ## Development ##
 

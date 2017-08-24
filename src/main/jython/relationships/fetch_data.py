@@ -59,6 +59,14 @@ class Graph(object):
         return dict
 
 
+def resolve_gate_release_id(plan_item_id):
+    release_id_parts = []
+    for p in plan_item_id.split("/"):
+        if p.startswith("Phase"):
+            break
+        release_id_parts.append(p)
+    return "/".join(release_id_parts)
+
 
 def process_task(task, graph, node):
     if task.type in ["xlrelease.ParallelGroup", "xlrelease.SequentialGroup"]:
@@ -70,6 +78,12 @@ def process_task(task, graph, node):
         elif str(task.status) == "PLANNED":
             graph.add_edge(node.id, task.templateId, task.title)
             analyse(task.templateId, graph)
+    elif task.type == "xlrelease.GateTask" and len(task.dependencies) > 0:
+        for dep in task.dependencies:
+            if dep.hasResolvedTarget():
+                target_id = resolve_gate_release_id(dep.targetId)
+                graph.add_edge(node.id, target_id, task.title)
+                analyse(target_id, graph)
 
 
 def process_tasks(tasks, graph, node):
