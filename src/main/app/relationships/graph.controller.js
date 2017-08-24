@@ -9,13 +9,14 @@ export default class GraphController {
         this.$window = $window;
         this.$location = $location;
         this.$rootScope = $rootScope;
+        this.lastUpdated = new Date();
         this.release =  $scope.releasePageExtensionCtrl.release;
         this.currentStart = "TEMPLATE" == this.release.status ? "template" : "release";
         this.settings = {layoutDirection: "LR", layoutAlign: "UL", showTitle: true, showLabel: true};
         this._loadSettings();
         this._initGraphConfig();
         this._initGraphOptions();
-        this._initGraphData();
+        this.initGraphData();
     }
 
 
@@ -73,14 +74,16 @@ export default class GraphController {
         });
     }
 
-    _initGraphData() {
+    initGraphData() {
         this.graphService.get(this.release.id).then((data) => {
             this._layoutNodes(data);
             this._updateGraphData(data.nodes, data.edges);
+            this.lastUpdated = new Date();
             this.$timeout(() => this._enableDragLayer(data.nodes), 500);
         }, (data) => {
             this.graphConfig.dataLoaded = true;
-            this.errorMessage = "Failed to load data."
+            this.lastUpdated = new Date();
+            this.errorMessage = "Failed to load data. See server logs for details."
         });
     }
 

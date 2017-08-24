@@ -18,7 +18,9 @@
             <button class="btn btn-flat" ng-click="$ctrl.zoomOut()">+</button>
             <span class="relationship-toolbar-showhide-label">Title&nbsp;&nbsp;<input type="checkbox" ng-model="$ctrl.settings.showTitle" ng-change="$ctrl.showHideLabels()"></input></span>
             <span class="relationship-toolbar-showhide-label">Label&nbsp;&nbsp;<input type="checkbox" ng-model="$ctrl.settings.showLabel" ng-change="$ctrl.showHideLabels()"></input></span>
-            <button class="btn btn-flat pull-right" style="" ng-click="$ctrl._initGraphData()">Reload</button>
+            <div class="pull-right">
+                <button class="btn btn-flat" style="" ng-click="$ctrl.initGraphData()"><i class="glyphicon glyphicon-refresh"></i> Refresh</button>
+            </div>
 
         </div>
     </div>
@@ -31,6 +33,9 @@
                 <img src="static/7.0/relationships/img/completerelease.svg" class="relationship-legend-icon"/><span class="relationship-legend">Completed release</span>
             </span>
             <span><img src="static/7.0/relationships/img/template.svg" class="relationship-legend-icon"/><span class="relationship-legend">Template</span></span>
+            <div class="pull-right">
+                <span class="relationship-last-updated"> Last updated: {{ $ctrl.lastUpdated | date :  "MMM dd, yyyy h:mm:ss a" }}</span>
+            </div>
         </div>
         <div>
             <p ng-if="$ctrl.errorMessage">{{$ctrl.errorMessage}}</p>
@@ -60,6 +65,15 @@
             color: rgb(51, 51, 51);
             padding-left: 10px;
             padding-right: 30px;
+        }
+
+        .relationship-last-updated {
+            padding: 0px 25px 1px 25px;
+            font-family: "Sans-serif";
+            font-size: 12px;
+            line-height: 1;
+            font-weight: 300;
+
         }
     </style>
 </div>
