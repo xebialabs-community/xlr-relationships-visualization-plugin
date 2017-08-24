@@ -1,14 +1,18 @@
 
 from com.xebialabs.deployit.exception import NotFoundException
 
+
 class Node(object):
-    def __init__(self, name, id, kind, status):
+
+    def __init__(self, name, node_id, kind, status):
         self.name = name
-        self.id = id
+        self.id = node_id
         self.kind = kind
         self.status = status
 
+
 class Edge(object):
+
     def __init__(self, source_id, target_id, name, curve=0):
         self.source = source_id
         self.target = target_id
@@ -40,23 +44,23 @@ class Graph(object):
 
         self.edges.append(Edge(source_id, target_id, task_name, curve))
 
-    def add_node(self, name, id, kind, status):
-        node = Node(name, id, kind, status)
+    def add_node(self, name, node_id, kind, status):
+        node = Node(name, node_id, kind, status)
         self.nodes.append(node)
-        self.processed_nodes.append(id)
+        self.processed_nodes.append(node_id)
         return node
 
-    def node_processed(self, id):
-        return id in self.processed_nodes
+    def node_processed(self, nid):
+        return nid in self.processed_nodes
 
     def to_dict(self):
-        dict = {"nodes": [], "edges": []}
+        result_dict = {"nodes": [], "edges": []}
         for n in self.nodes:
-            dict["nodes"].append({"name": n.id, "label": n.name, "kind": n.kind, "status": str(n.status)})
+            result_dict["nodes"].append({"name": n.id, "label": n.name, "kind": n.kind, "status": str(n.status)})
         for e in self.edges:
-            dict["edges"].append({"source": e.source, "target": e.target, "label": e.name, "curve": e.curve,
+            result_dict["edges"].append({"source": e.source, "target": e.target, "label": e.name, "curve": e.curve,
                                   "cardinality": e.cardinality})
-        return dict
+        return result_dict
 
 
 def resolve_gate_release_id(plan_item_id):
@@ -90,27 +94,26 @@ def process_tasks(tasks, graph, node):
     [process_task(t, graph, node) for t in tasks]
 
 
-def analyse(id, graph):
-    if not graph.node_processed(id):
-        release = read(id)
+def analyse(release_id, graph):
+    if not graph.node_processed(release_id):
+        release = read(release_id)
         kind = "template" if str(release.status) == "TEMPLATE" else "release"
-        node = graph.add_node(release.title, id, kind, release.status)
+        node = graph.add_node(release.title, release_id, kind, release.status)
         [process_tasks(p.tasks, graph, node) for p in release.phases]
 
 
-def read(id):
+def read(release_id):
     try:
-        return templateApi.getTemplate(id)
+        return templateApi.getTemplate(release_id)
     except NotFoundException:
-        return releaseApi.getArchivedRelease(id)
+        return releaseApi.getArchivedRelease(release_id)
 
 
+rid = request.query["id"]
+rid = rid.replace("-", "/")
+result_graph = Graph()
+analyse(rid, result_graph)
 
-id=request.query["id"]
-id = id.replace("-", "/")
-graph = Graph()
-analyse(id, graph)
-
-response.entity=graph.to_dict()
+response.entity = result_graph.to_dict()
 
 
