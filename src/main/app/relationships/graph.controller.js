@@ -90,6 +90,10 @@ export default class GraphController {
                 if (n.kind == "template") {
                     n.itemStyle = { normal: templateStyle, emphasis: templateStyle};
                     n.symbolSize= 28;
+                } else if (n.status == "FAILING" || n.status == "FAILED" || n.status == "ABORTED") {
+                    n.itemStyle = { normal: { color: "#A94442"}, emphasis: { color: "#A94442"}};
+                } else if (n.status == "COMPLETED") {
+                    n.itemStyle = { normal: { color: "#5DAE3F"}, emphasis: { color: "#5DAE3F"}};
                 } else {
                     n.itemStyle = { normal: { color: "#0099CC"}, emphasis: { color: "#0099CC"}};
                 }

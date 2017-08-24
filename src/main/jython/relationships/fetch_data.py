@@ -2,11 +2,11 @@
 from com.xebialabs.deployit.exception import NotFoundException
 
 class Node(object):
-    def __init__(self, name, id, kind):
+    def __init__(self, name, id, kind, status):
         self.name = name
         self.id = id
         self.kind = kind
-
+        self.status = status
 
 class Edge(object):
     def __init__(self, source_id, target_id, name, curve=0):
@@ -40,8 +40,8 @@ class Graph(object):
 
         self.edges.append(Edge(source_id, target_id, task_name, curve))
 
-    def add_node(self, name, id, kind):
-        node = Node(name, id, kind)
+    def add_node(self, name, id, kind, status):
+        node = Node(name, id, kind, status)
         self.nodes.append(node)
         self.processed_nodes.append(id)
         return node
@@ -52,7 +52,7 @@ class Graph(object):
     def to_dict(self):
         dict = {"nodes": [], "edges": []}
         for n in self.nodes:
-            dict["nodes"].append({"name": n.id, "label": n.name, "kind": n.kind})
+            dict["nodes"].append({"name": n.id, "label": n.name, "kind": n.kind, "status": str(n.status)})
         for e in self.edges:
             dict["edges"].append({"source": e.source, "target": e.target, "label": e.name, "curve": e.curve,
                                   "cardinality": e.cardinality})
@@ -80,7 +80,7 @@ def analyse(id, graph):
     if not graph.node_processed(id):
         release = read(id)
         kind = "template" if str(release.status) == "TEMPLATE" else "release"
-        node = graph.add_node(release.title, id, kind)
+        node = graph.add_node(release.title, id, kind, release.status)
         [process_tasks(p.tasks, graph, node) for p in release.phases]
 
 
@@ -91,8 +91,6 @@ def read(id):
         return releaseApi.getArchivedRelease(id)
 
 
-
-#releaseId = request.query['releaseId']
 
 id=request.query["id"]
 id = id.replace("-", "/")

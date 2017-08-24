@@ -25,7 +25,9 @@
     <div class="content-under-header">
         <div class="relationship-legend-bar">
             <span><img src="static/7.0/relationships/img/pin.svg" class="relationship-legend-icon"/><span class="relationship-legend">Current {{$ctrl.currentStart}}</span></span>
-            <span ng-if="$ctrl.currentStart != 'template'"><img src="static/7.0/relationships/img/release.svg" class="relationship-legend-icon"/><span class="relationship-legend">Release</span></span>
+            <span ng-if="$ctrl.currentStart != 'template'"><img src="static/7.0/relationships/img/release.svg" class="relationship-legend-icon"/><span class="relationship-legend">Release in progress</span></span>
+            <span ng-if="$ctrl.currentStart != 'template'"><img src="static/7.0/relationships/img/failedrelease.svg" class="relationship-legend-icon"/><span class="relationship-legend">Failed release</span></span>
+            <span ng-if="$ctrl.currentStart != 'template'"><img src="static/7.0/relationships/img/completerelease.svg" class="relationship-legend-icon"/><span class="relationship-legend">Completed release</span></span>
             <span><img src="static/7.0/relationships/img/template.svg" class="relationship-legend-icon"/><span class="relationship-legend">Template</span></span>
         </div>
         <div>
