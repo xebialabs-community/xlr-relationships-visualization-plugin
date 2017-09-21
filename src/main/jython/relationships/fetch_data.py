@@ -85,7 +85,13 @@ def process_task(task, graph, node):
     elif task.type == "xlrelease.GateTask" and len(task.dependencies) > 0:
         for dep in task.dependencies:
             if dep.hasResolvedTarget():
-                target_id = resolve_gate_release_id(dep.targetId)
+                if dep.target is not None and dep.target.id is not None:
+                    target_id = dep.target.id
+                elif dep.targetId is not None:
+                    target_id = dep.targetId
+                else:
+                    continue
+                target_id = resolve_gate_release_id(target_id)
                 graph.add_edge(node.id, target_id, task.title)
                 analyse(target_id, graph)
 
