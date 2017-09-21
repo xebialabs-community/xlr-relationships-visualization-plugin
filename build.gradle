@@ -4,7 +4,7 @@ plugins {
 
 apply plugin: 'java'
 
-version = "7.0.0-rc5"
+version = "7.0.0-rc6"
 repositories {
     mavenLocal()
     mavenCentral()
