@@ -103,16 +103,24 @@ def process_tasks(tasks, graph, node):
 def analyse(release_id, graph):
     if not graph.node_processed(release_id):
         release = read(release_id)
-        kind = "template" if str(release.status) == "TEMPLATE" else "release"
-        node = graph.add_node(release.title, release_id, kind, release.status)
-        [process_tasks(p.tasks, graph, node) for p in release.phases]
+        if release is not None:
+            kind = "template" if str(release.status) == "TEMPLATE" else "release"
+            node = graph.add_node(release.title, release_id, kind, release.status)
+            [process_tasks(p.tasks, graph, node) for p in release.phases]
 
 
 def read(release_id):
     try:
         return templateApi.getTemplate(release_id)
     except NotFoundException:
-        return releaseApi.getArchivedRelease(release_id)
+        try:
+            return releaseApi.getArchivedRelease(release_id)
+        except NotFoundException:
+            msg = "Release id [%s] not found. " % release_id
+            msg += "Could be caused by the importing a template that has a reference to a non-existing template. "
+            msg += "Another cause could could be the removal of archived releases."
+            logger.error(msg)
+            return None
 
 
 rid = request.query["id"]
