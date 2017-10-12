@@ -56,9 +56,9 @@ class Graph(object):
     def to_dict(self):
         result_dict = {"nodes": [], "edges": []}
         for n in self.nodes:
-            result_dict["nodes"].append({"name": n.id, "label": n.name, "kind": n.kind, "status": str(n.status)})
+            result_dict["nodes"].append({"name": n.id, "displayLabel": n.name, "kind": n.kind, "status": str(n.status)})
         for e in self.edges:
-            result_dict["edges"].append({"source": e.source, "target": e.target, "label": e.name, "curve": e.curve,
+            result_dict["edges"].append({"source": e.source, "target": e.target, "displayLabel": e.name, "curve": e.curve,
                                   "cardinality": e.cardinality})
         return result_dict
 

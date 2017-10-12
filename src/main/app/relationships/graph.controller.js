@@ -189,7 +189,7 @@ export default class GraphController {
                             color: "#999999",
                             fontSize: 10
                         },
-                        formatter: function(params) {return params.data.label}
+                        formatter: function(params) {return params.data.displayLabel}
                     }
                 },
                 lineStyle: {
@@ -202,7 +202,7 @@ export default class GraphController {
                 label: {
                     normal: {
                         show: this.settings.showTitle,
-                        formatter: function(params) {return params.data.label},
+                        formatter: function(params) {return params.data.displayLabel},
                         position: 'top',
                         textStyle: {
                             color: "#333",
