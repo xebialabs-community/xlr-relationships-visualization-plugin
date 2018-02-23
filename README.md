@@ -1,4 +1,7 @@
-# DEPRECATTED!  This feature has been incorporated into the main product as of XL Release 7.5.
+# DEPRECATTED!  
+# This feature has been incorporated into the main product as of XL Release 7.5.
+
+This repository will not be maintained.
 
 # XL Release Relationship Visualization Plugin
 
