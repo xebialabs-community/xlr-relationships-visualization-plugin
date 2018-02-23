@@ -1,3 +1,5 @@
+# DEPRECATTED!  This feature has been incorporated into the main product as of XL Release 7.5.
+
 # XL Release Relationship Visualization Plugin
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
