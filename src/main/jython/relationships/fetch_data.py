@@ -1,7 +1,6 @@
 
 from com.xebialabs.deployit.exception import NotFoundException
 
-
 class Node(object):
 
     def __init__(self, name, node_id, kind, status):
@@ -44,11 +43,18 @@ class Graph(object):
 
         self.edges.append(Edge(source_id, target_id, task_name, curve))
 
+    def remove_edges(self,  node_id):
+        self.edges = [edge for edge in self.edges if edge.source != node_id and edge.target != node_id]
+
     def add_node(self, name, node_id, kind, status):
         node = Node(name, node_id, kind, status)
         self.nodes.append(node)
         self.processed_nodes.append(node_id)
         return node
+
+    def remove_node(self, node):
+        self.remove_edges(node.id)
+        self.nodes.remove(node)
 
     def node_processed(self, nid):
         return nid in self.processed_nodes
@@ -70,7 +76,6 @@ def resolve_gate_release_id(plan_item_id):
             break
         release_id_parts.append(p)
     return "/".join(release_id_parts)
-
 
 def process_task(task, graph, node):
     if task.type in ["xlrelease.ParallelGroup", "xlrelease.SequentialGroup"]:
@@ -95,10 +100,8 @@ def process_task(task, graph, node):
                 graph.add_edge(node.id, target_id, task.title)
                 analyse(target_id, graph)
 
-
 def process_tasks(tasks, graph, node):
     [process_task(t, graph, node) for t in tasks]
-
 
 def analyse(release_id, graph):
     if not graph.node_processed(release_id):
@@ -108,6 +111,36 @@ def analyse(release_id, graph):
             node = graph.add_node(release.title, release_id, kind, release.status)
             [process_tasks(p.tasks, graph, node) for p in release.phases]
 
+def is_task_waiting_for(task, release_id):
+    if task.type in ["xlrelease.ParallelGroup", "xlrelease.SequentialGroup"]:
+        return is_any_task_waiting_for(task.tasks, release_id)
+    elif task.type == "xlrelease.GateTask" and len(task.dependencies) > 0:
+        for dep in task.dependencies:
+            if dep.hasResolvedTarget():
+                if dep.target is not None and dep.target.id is not None:
+                    target_id = dep.target.id
+                elif dep.targetId is not None:
+                    target_id = dep.targetId
+                else:
+                    continue
+                target_id = resolve_gate_release_id(target_id)
+                return target_id == release_id
+    return False
+
+def is_any_task_waiting_for(tasks, release_id):
+    res = any([is_task_waiting_for(t, release_id) for t in tasks])
+    return res
+
+def is_release_waiting_for(release_id, search_release_id):
+    release = read(release_id)
+    res = any([is_any_task_waiting_for(p.tasks, search_release_id) for p in release.phases])
+    return res
+
+def search_for_release(release_id, graph):
+    releases = releaseApi.getReleases()
+    for release in releases:
+        if is_release_waiting_for(release.id, release_id):
+            analyse(release.id, graph)
 
 def read(release_id):
     try:
@@ -118,15 +151,16 @@ def read(release_id):
         except NotFoundException:
             msg = "Release id [%s] not found. " % release_id
             msg += "Could be caused by the importing a template that has a reference to a non-existing template. "
-            msg += "Another cause could could be the removal of archived releases."
+            msg += "Another cause could be the removal of archived releases."
             logger.error(msg)
             return None
-
 
 rid = request.query["id"]
 rid = rid.replace("-", "/")
 result_graph = Graph()
 analyse(rid, result_graph)
+
+search_for_release(rid, result_graph)
 
 response.entity = result_graph.to_dict()
 
